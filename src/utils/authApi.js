@@ -6,7 +6,7 @@ export const loginUser = async (UID, password) => {
       UID,
       password,
     });
-console.log(response)
+// console.log(response)
     return response.data; // { token, user }
   } catch (error) {
     console.log( "this is my error",error.response?.data || { message: 'Login failed' });
@@ -14,3 +14,14 @@ console.log(response)
     throw err 
   }
 };
+export const getSchedule = async () => {
+  try {
+    const UID = localStorage.getItem('UID');
+    const response = await API.get(`/getSchedule?UID=${UID}`);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.data?.message || 'Failed to fetch schedule';
+    throw new Error(errMsg);
+  }
+};
+
