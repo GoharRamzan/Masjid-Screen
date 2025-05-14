@@ -1,6 +1,12 @@
 import React from 'react'
 import { Typewriter } from 'react-simple-typewriter';
-const Main = () => {
+const Main = ({duaData}) => {
+    // console.log("get dua",duaData)
+    const filterBottomDua = duaData?.filter((dua)=>dua.type=="bottomDua")
+    const filterTopDua = duaData?.filter((dua)=>dua.type=="topDua")
+    const topDuaContent = filterTopDua.map((dua)=>dua.content)
+    const bottomDuaContent = filterBottomDua.map((dua)=>dua.content)
+    // console.log(topDuaContent)
     return (
         <div className='h-full w-full px-5 xl:px-8 py-3 flex flex-col justify-between items-center'>
             <div className='w-full h-[18%] text-lg xl:text-2xl 2xl:text-4xl   bg-[#4A2D1B] text-white rounded-xl  md:py-3 xl:py-7 flex flex-col justify-center items-center  '>
@@ -27,12 +33,7 @@ const Main = () => {
                             >
                                 <span dir="rtl">
                                     <Typewriter
-                                        words={[
-                                            "اللَّهُمَّ أَنْتَ السَّلاَمُ وَمِنْكَ السَّلاَمُ تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالإِكْرَامِ",
-                                            "اللَّهُمَّ اغْفِرْ لِي وَارْحَمْنِي وَاهْدِنِي وَعَافِنِي وَارْزُقْنِي",
-                                            "لَا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ",
-                                            "اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ، وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ"
-                                        ]}
+                                        words={topDuaContent}
                                         loop={true}
                                         cursor
                                         cursorStyle="|"
@@ -70,11 +71,7 @@ const Main = () => {
                             >
                                 <span dir="rtl">
                                     <Typewriter
-                                        words={[
-                                            "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ، وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَىْءٍ قَدِيرٌ",
-                                            "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ",
-                                            "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
-                                        ]}
+                                        words={bottomDuaContent}
                                         loop={true}
                                         cursor
                                         cursorStyle="|"

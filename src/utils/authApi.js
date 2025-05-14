@@ -14,10 +14,11 @@ export const loginUser = async (UID, password) => {
     throw err 
   }
 };
-export const getSchedule = async () => {
+export const getRequestById = async (route) => {
+  console.log("route",route)
   try {
     const UID = localStorage.getItem('UID');
-    const response = await API.get(`/getSchedule?UID=${UID}`);
+    const response = await API.get(`/${route}?UID=${UID}`);
     return response.data;
   } catch (error) {
     const errMsg = error.response?.data?.message || 'Failed to fetch schedule';

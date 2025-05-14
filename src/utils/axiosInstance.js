@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://masjid-screen-phi.vercel.app/api', // ✅ match with your backend
+  // baseURL: 'https://masjid-screen-phi.vercel.app/api', // ✅ match with your backend
+  baseURL: 'http://localhost:5000/api', // local URL
 });
 
 // Request: Attach token automatically

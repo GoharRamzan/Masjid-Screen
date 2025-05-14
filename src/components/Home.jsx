@@ -4,13 +4,14 @@ import Header from './Header';
 import Footer from './Footer';
 import image from '../assets/islamic.webp'
 import Main from './Main';
-import { getSchedule } from '../utils/authApi';
+import { getRequestById } from '../utils/authApi';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 const socket = io('http://localhost:5000');
 function HomePage() {
   const [isLeft, setIsLeft] = useState(null);
   const [data, setData] = useState([]);
+  const [duas, setDua] = useState([]);
   const [loader, setIsLoader] = useState(false);
   const navigate = useNavigate()
   const portraitStyle2 = {
@@ -29,6 +30,27 @@ function HomePage() {
       ? "translate(-50%, -50%) rotate(-90deg)"
       : "translate(-50%, -50%) rotate(90deg)",
   };
+  // console.log("get duas by state ", duas)
+   const getDua = async () =>{
+    const cachedData = localStorage.getItem("dua")
+    if(cachedData){
+        setDua(JSON.parse(cachedData))
+    }else{
+        setIsLoader(true)
+    }
+    try {
+        const response = await getRequestById("getDua")
+        console.log(response)
+         localStorage.setItem("dua",JSON.stringify(response?.data))
+         setDua(response?.data)
+        // setIsLoader(false)
+    } catch (error) {
+        console.log("Fetching Error",error)
+        // setIsLoader(false)
+    }
+  }
+
+
   const getPrayersTime = async () =>{
     const cachedData = localStorage.getItem("prayersTime")
     if(cachedData){
@@ -37,8 +59,8 @@ function HomePage() {
         setIsLoader(true)
     }
     try {
-        const response = await getSchedule()
-        console.log(response)
+        const response = await getRequestById("getSchedule")
+        // console.log(response)
          localStorage.setItem("prayersTime",JSON.stringify(response?.data[0]))
          setData(response?.data[0])
         setIsLoader(false)
@@ -55,11 +77,20 @@ function HomePage() {
           return
         }
         getPrayersTime()
+        getDua()
           if (UID) {
       socket.emit('joinRoom', UID);
-      console.log("Joined room:", UID);
+      // console.log("Joined room:", UID);
+      // get dua
+       socket.on('DuaUpdated', (updatedDua) => {
+      // console.log("Prayer schedule updated via socket:", updatedDua?.duas);
+      localStorage.setItem("dua", JSON.stringify(updatedDua?.duas));
+      setDua(updatedDua?.duas);
+    }); 
+
+      // get schedule 
       socket.on('prayerScheduleUpdated', (updatedSchedule) => {
-      console.log("Prayer schedule updated via socket:", updatedSchedule);
+      // console.log("Prayer schedule updated via socket:", updatedSchedule);
       localStorage.setItem("prayersTime", JSON.stringify(updatedSchedule));
       setData(updatedSchedule);
     });
@@ -85,7 +116,7 @@ function HomePage() {
           <Header  />
         </div>
         <div className='h-[65vw] w-full overflow-hidden '>
-          <Main />
+          <Main duaData={duas}/>
         </div>
         <div className='h-[15vw] w-full overflow-hidden '>
           <Footer  prayerTime={data} isLoader={loader}/>
