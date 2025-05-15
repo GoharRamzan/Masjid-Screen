@@ -7,7 +7,7 @@ import Main from './Main';
 import { getRequestById } from '../utils/authApi';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
-const socket = io('https://masjid-screen-phi.vercel.app');
+const socket = io('http://localhost:5000.app');
 function HomePage() {
   const [isLeft, setIsLeft] = useState(null);
   const [data, setData] = useState([]);
