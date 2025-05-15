@@ -7,7 +7,7 @@ import Main from './Main';
 import { getRequestById } from '../utils/authApi';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000');
+const socket = io('https://masjid-screen-phi.vercel.app');
 function HomePage() {
   const [isLeft, setIsLeft] = useState(null);
   const [data, setData] = useState([]);
@@ -78,7 +78,7 @@ function HomePage() {
         }
         getPrayersTime()
         getDua()
-          if (UID) {
+      if (UID) {
       socket.emit('joinRoom', UID);
       // console.log("Joined room:", UID);
       // get dua

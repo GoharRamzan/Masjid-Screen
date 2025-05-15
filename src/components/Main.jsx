@@ -46,18 +46,18 @@ const Main = ({duaData}) => {
                         </tr>
                         <tr className='text-2xl  xl:text-4xl 2xl:text-5xl w-full'>
                             <td className='text-center'>33 Times</td>
-                            <td className='text-center font-serif'>أَسْتَغْفِرُ ٱللَّٰهَ</td>
+                            <td className='text-center font-serif'>سُبْحَانَ ٱللَّٰهِ</td>
                             <td className='text-center font-serif'>  ۳۳ مرتبہ</td>
                         </tr>
                         <tr className='text-2xl  xl:text-4xl 2xl:text-5xl w-full'>
                             <td className='text-center '>33 Times</td>
-                            <td className='text-center font-serif'>أَسْتَغْفِرُ ٱللَّٰهَ</td>
+                            <td className='text-center font-serif'>ٱلْحَمْدُ لِلَّٰهِ</td>
                             <td className='text-center font-serif'>  ۳۳ مرتبہ</td>
                         </tr>
                         <tr className='text-2xl   xl:text-4xl 2xl:text-5xl w-full'>
-                            <td className='text-center'>33 Times</td>
-                            <td className='text-center font-serif'>أَسْتَغْفِرُ ٱللَّٰهَ</td>
-                            <td className='text-center font-serif'>  ۳۳ مرتبہ</td>
+                            <td className='text-center'>34 Times</td>
+                            <td className='text-center font-serif'>الله أكبر</td>
+                            <td className='text-center font-serif'>  ۳۴ مرتبہ</td>
                         </tr>
                         {/* <tr className='text-2xl  md:leading-10 xl:text-5xl xl:leading-16 2xl:text-6xl w-full '>
                             <td className='text-center col-span-3 row-span-3 font-serif font-bold' colSpan={3}> لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ، وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَىْءٍ قَدِيرٌ
