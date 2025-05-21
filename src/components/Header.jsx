@@ -23,7 +23,7 @@ const Header = () => {
             
             </div>
             <div className='border-2 border-[#856b47]   w-2/4 text-center rounded-2xl text-lg xl:text-2xl xl:p-4  bg-[#ecc58f]'>{currentTime}</div>
-            <div className='flex gap-2 mb' >
+            <div className='flex gap-2 mb-5' >
                 <span className='text-2xl font-bold '>{mosqueName}</span>
                 <span className='text-2xl font-bold '>({mosqueArea})</span>
             </div>

@@ -7,7 +7,8 @@ import Main from './Main';
 import { getRequestById } from '../utils/authApi';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000.app');
+// const socket = io('http://localhost:5000');
+const socket = io('https://masjid-screen-phi.vercel.app/');
 function HomePage() {
   const [isLeft, setIsLeft] = useState(null);
   const [data, setData] = useState([]);
@@ -31,74 +32,63 @@ function HomePage() {
       : "translate(-50%, -50%) rotate(90deg)",
   };
   // console.log("get duas by state ", duas)
-   const getDua = async () =>{
-    const cachedData = localStorage.getItem("dua")
-    if(cachedData){
-        setDua(JSON.parse(cachedData))
-    }else{
-        setIsLoader(true)
-    }
-    try {
-        const response = await getRequestById("getDua")
-        console.log(response)
-         localStorage.setItem("dua",JSON.stringify(response?.data))
-         setDua(response?.data)
-        // setIsLoader(false)
-    } catch (error) {
-        console.log("Fetching Error",error)
-        // setIsLoader(false)
-    }
+ const getDua = async () => {
+  try {
+    setIsLoader(true);
+    const response = await getRequestById("getDua");
+    console.log(response);
+    setDua(response?.data);
+  } catch (error) {
+    console.log("Fetching Error", error);
+  } finally {
+    setIsLoader(false);
+  }
+};
+
+const getPrayersTime = async () => {
+  try {
+    setIsLoader(true);
+    const response = await getRequestById("getSchedule");
+    setData(response?.data[0]);
+  } catch (error) {
+    console.log("Fetching Error", error);
+  } finally {
+    setIsLoader(false);
+  }
+};
+useEffect(() => {
+  const getToken = localStorage.getItem("token");
+  const UID = localStorage.getItem("UID");
+
+  if (!getToken) {
+    navigate("/login");
+    return;
   }
 
+  getPrayersTime();
+  getDua();
 
-  const getPrayersTime = async () =>{
-    const cachedData = localStorage.getItem("prayersTime")
-    if(cachedData){
-        setData(JSON.parse(cachedData))
-    }else{
-        setIsLoader(true)
-    }
-    try {
-        const response = await getRequestById("getSchedule")
-        // console.log(response)
-         localStorage.setItem("prayersTime",JSON.stringify(response?.data[0]))
-         setData(response?.data[0])
-        setIsLoader(false)
-    } catch (error) {
-        console.log("Fetching Error",error)
-        setIsLoader(false)
-    }
-  }
-  useEffect(()=>{
-      const getToken = localStorage.getItem("token")
-        const UID = localStorage.getItem("UID");
-      if(!getToken){
-          navigate("/login")
-          return
-        }
-        getPrayersTime()
-        getDua()
-      if (UID) {
-      socket.emit('joinRoom', UID);
-      // console.log("Joined room:", UID);
-      // get dua
-       socket.on('DuaUpdated', (updatedDua) => {
-      // console.log("Prayer schedule updated via socket:", updatedDua?.duas);
-      localStorage.setItem("dua", JSON.stringify(updatedDua?.duas));
+  if (UID) {
+    socket.emit("joinRoom", UID);
+
+    const handleDuaUpdate = (updatedDua) => {
       setDua(updatedDua?.duas);
-    }); 
-
-      // get schedule 
-      socket.on('prayerScheduleUpdated', (updatedSchedule) => {
-      // console.log("Prayer schedule updated via socket:", updatedSchedule);
-      localStorage.setItem("prayersTime", JSON.stringify(updatedSchedule));
-      setData(updatedSchedule);
-    });
-      return () => {
-      socket.off('prayerScheduleUpdated');
     };
-    }
-  },[])
+
+    const handleScheduleUpdate = (updatedSchedule) => {
+      setData(updatedSchedule);
+    };
+
+    socket.on("DuaUpdated", handleDuaUpdate);
+    socket.on("prayerScheduleUpdated", handleScheduleUpdate);
+
+    return () => {
+      socket.off("DuaUpdated", handleDuaUpdate);
+      socket.off("prayerScheduleUpdated", handleScheduleUpdate);
+    };
+  }
+}, []);
+
   return (
     <>
 
